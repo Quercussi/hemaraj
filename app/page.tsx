@@ -2,8 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { useQuestions } from './hooks/useQuestions';
+import { useImages } from './hooks/useImages';
 import PasswordView from './views/PasswordView';
 import MCQView from './views/MCQView';
+import OrderingView from './views/OrderingView';
 import { LoadingState } from './components/common/LoadingState';
 import FloatingHearts from './components/common/FloatingHearts';
 import { Stage } from './types/session';
