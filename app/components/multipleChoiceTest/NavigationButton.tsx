@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface NavigationButtonProps {
   direction: 'prev' | 'next';
@@ -7,6 +8,7 @@ interface NavigationButtonProps {
 
 export function NavigationButton({ direction, onClick }: NavigationButtonProps) {
   const isNext = direction === 'next';
+  const Icon = isNext ? ChevronRight : ChevronLeft;
 
   return (
     <motion.button
@@ -14,9 +16,9 @@ export function NavigationButton({ direction, onClick }: NavigationButtonProps) 
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: isNext ? 20 : -20 }}
       onClick={onClick}
-      className={`fixed ${isNext ? 'right-8' : 'left-8'} top-1/2 -translate-y-1/2 z-50 w-14 h-14 rounded-full bg-white shadow-2xl flex items-center justify-center hover:bg-rose-50 transition-colors text-2xl`}
+      className="flex-shrink-0 w-16 h-16 flex items-center justify-center hover:scale-110 transition-all duration-300 ease-out text-rose-400 hover:text-rose-600 drop-shadow-lg z-50"
     >
-      {isNext ? '→' : '←'}
+      <Icon size={48} strokeWidth={1.5} />
     </motion.button>
   );
 }
