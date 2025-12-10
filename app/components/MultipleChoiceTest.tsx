@@ -103,9 +103,9 @@ export default function MultipleChoiceTest({ questions, onComplete }: MultipleCh
   };
 
   const cardVariants = {
-    enter: (dir: number) => ({ x: dir > 0 ? '100%' : '-100%', opacity: 1 }),
+    enter: (dir: number) => ({ x: dir > 0 ? '100%' : '-100%', opacity: 0 }),
     center: { x: 0, opacity: 1 },
-    exit: (dir: number) => ({ x: dir < 0 ? '100%' : '-100%', opacity: 1 }),
+    exit: (dir: number) => ({ x: dir < 0 ? '100%' : '-100%', opacity: 0 }),
   };
 
   const allAnswered = questions.length > 0 && questions.every((q) => answers[q.id] !== undefined);
@@ -131,48 +131,55 @@ export default function MultipleChoiceTest({ questions, onComplete }: MultipleCh
       </motion.div>
 
       {/* Card Area */}
-      <div className="relative w-full flex-1 flex items-center justify-center">
-        {/* Navigation */}
-        <AnimatePresence>
-          {currentCard > 0 && <NavigationButton direction="prev" onClick={handlePrev} />}
-        </AnimatePresence>
+      <div className="relative w-full flex-1 flex items-center justify-center px-8 gap-8">
+        {/* Navigation - Prev (with invisible placeholder) */}
+        <div className="flex-shrink-0 w-16 h-16">
+          <AnimatePresence>
+            {currentCard > 0 && <NavigationButton direction="prev" onClick={handlePrev} />}
+          </AnimatePresence>
+        </div>
 
-        <AnimatePresence>
-          {currentCard < questions.length - 1 && (
-            <NavigationButton direction="next" onClick={handleNext} />
-          )}
-        </AnimatePresence>
+        {/* Cards Container */}
+        <div className="relative w-full max-w-4xl flex items-center justify-center">
+          <AnimatePresence mode="popLayout" initial={false} custom={direction}>
+            {questions[currentCard] && (
+              <motion.div
+                key={questions[currentCard].id}
+                variants={cardVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                custom={direction}
+                transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+                className="w-full min-h-[500px] flex items-center justify-center px-8"
+              >
+                <QuestionCard
+                  question={questions[currentCard]}
+                  questions={questions}
+                  currentIndex={currentCard}
+                  totalQuestions={questions.length}
+                  selectedAnswer={answers[questions[currentCard].id]}
+                  allAnswers={answers}
+                  onSelectChoice={handleChoiceSelect}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-        {/* Cards */}
-        <AnimatePresence mode="popLayout" initial={false} custom={direction}>
-          {questions[currentCard] && (
-            <motion.div
-              key={questions[currentCard].id}
-              variants={cardVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              custom={direction}
-              transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
-              className="absolute inset-0 flex items-center justify-center px-8"
-            >
-              <QuestionCard
-                question={questions[currentCard]}
-                questions={questions}
-                currentIndex={currentCard}
-                totalQuestions={questions.length}
-                selectedAnswer={answers[questions[currentCard].id]}
-                allAnswers={answers}
-                onSelectChoice={handleChoiceSelect}
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
+          <ProgressIndicator
+            answeredCount={Object.keys(answers).length}
+            totalQuestions={questions.length}
+          />
+        </div>
 
-        <ProgressIndicator
-          answeredCount={Object.keys(answers).length}
-          totalQuestions={questions.length}
-        />
+        {/* Navigation - Next (with invisible placeholder) */}
+        <div className="flex-shrink-0 w-16 h-16">
+          <AnimatePresence>
+            {currentCard < questions.length - 1 && (
+              <NavigationButton direction="next" onClick={handleNext} />
+            )}
+          </AnimatePresence>
+        </div>
       </div>
 
       {/* Error */}
