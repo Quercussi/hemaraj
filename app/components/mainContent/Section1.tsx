@@ -3,12 +3,10 @@
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import RotatingMessages from '../rotatingMessages/RotatingMessages';
+import { useRelationship } from '../../contexts/RelationshipContext';
 
-interface Section1Props {
-  relationshipStart: string;
-}
-
-export default function Section1({ relationshipStart }: Section1Props) {
+export default function Section1() {
+  const { relationshipStart } = useRelationship();
   const [duration, setDuration] = useState({
     years: 0,
     months: 0,

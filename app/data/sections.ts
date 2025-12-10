@@ -4,7 +4,7 @@ import { ComponentType } from 'react';
 export interface SectionConfig {
   id: number;
   label: string;
-  component: ComponentType<{ relationshipStart: string }>;
+  component: ComponentType;
   description: string;
 }
 
