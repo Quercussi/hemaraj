@@ -14,27 +14,35 @@ export default function Home() {
   const [isLoadingProgress, setIsLoadingProgress] = useState(true);
 
   const { questions, isLoading: questionsLoading, error: questionsError } = useQuestions();
+  const { images, isLoading: imagesLoading, error: imagesError } = useImages();
+
+  const fetchProgress = async () => {
+    try {
+      const response = await fetch('/api/progress');
+      const result: ProgressResponse = await response.json();
+
+      if (result.success && result.data.passwordUnlocked) {
+        setStage(result.data.stage);
+      } else {
+        setStage(Stage.Password);
+      }
+    } catch (error) {
+      console.error('Failed to fetch progress:', error);
+    } finally {
+      setIsLoadingProgress(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchProgress = async () => {
-      try {
-        const response = await fetch('/api/progress');
-        const result: ProgressResponse = await response.json();
-
-        if (result.success && result.data.passwordUnlocked) {
-          setStage(result.data.stage);
-        }
-      } catch (error) {
-        console.error('Failed to fetch progress:', error);
-      } finally {
-        setIsLoadingProgress(false);
-      }
-    };
-
     void fetchProgress();
   }, []);
 
-    if (isLoadingProgress) {
+  const handleStageComplete = async () => {
+    setIsLoadingProgress(true);
+    await fetchProgress();
+  };
+
+  if (isLoadingProgress) {
     return <LoadingState>Loading...</LoadingState>;
   }
 
@@ -44,13 +52,13 @@ export default function Home() {
       <FloatingHearts />
 
       {/* Stage-specific content */}
-      {stage === Stage.Password && <PasswordView onUnlock={() => setStage(Stage.MCQ)} />}
+      {stage === Stage.Password && <PasswordView onUnlock={handleStageComplete} />}
       {stage === Stage.MCQ && (
         <MCQView
           questions={questions}
           isLoading={questionsLoading}
           error={questionsError}
-          onComplete={() => setStage(Stage.Ordering)}
+          onComplete={handleStageComplete}
         />
       )}
     </>
