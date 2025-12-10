@@ -150,8 +150,8 @@ export default function MultipleChoiceTest({ questions, onComplete }: MultipleCh
                 animate="center"
                 exit="exit"
                 custom={direction}
-                transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
-                className="w-full min-h-[500px] flex items-center justify-center px-8"
+                transition={{ duration: 0.3, ease: [0.32, 0.72, 0, 1] }}
+                className="w-full min-h-[500px] flex items-center justify-center px-8 will-change-transform"
               >
                 <QuestionCard
                   question={questions[currentCard]}
