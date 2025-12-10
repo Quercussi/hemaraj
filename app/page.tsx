@@ -1,7 +1,9 @@
-"use client";
+'use client';
 
 import { useState, useEffect } from 'react';
+import { useQuestions } from './hooks/useQuestions';
 import PasswordView from './views/PasswordView';
+import MCQView from './views/MCQView';
 import { LoadingState } from './components/common/LoadingState';
 import FloatingHearts from './components/common/FloatingHearts';
 import { Stage } from './utils/session';
@@ -10,6 +12,8 @@ import type { ProgressResponse } from './api/progress/dto';
 export default function Home() {
   const [stage, setStage] = useState<Stage>(Stage.Password);
   const [isLoadingProgress, setIsLoadingProgress] = useState(true);
+
+  const { questions, isLoading: questionsLoading, error: questionsError } = useQuestions();
 
   useEffect(() => {
     const fetchProgress = async () => {
@@ -41,6 +45,14 @@ export default function Home() {
 
       {/* Stage-specific content */}
       {stage === Stage.Password && <PasswordView onUnlock={() => setStage(Stage.MCQ)} />}
+      {stage === Stage.MCQ && (
+        <MCQView
+          questions={questions}
+          isLoading={questionsLoading}
+          error={questionsError}
+          onComplete={() => setStage(Stage.Ordering)}
+        />
+      )}
     </>
   );
 }
