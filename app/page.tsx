@@ -6,6 +6,7 @@ import { useImages } from './hooks/useImages';
 import PasswordView from './views/PasswordView';
 import MCQView from './views/MCQView';
 import OrderingView from './views/OrderingView';
+import MainContentView from './views/MainContentView';
 import { LoadingState } from './components/common/LoadingState';
 import FloatingHearts from './components/common/FloatingHearts';
 import { Stage } from './types/session';
@@ -44,6 +45,15 @@ export default function Home() {
     await fetchProgress();
   };
 
+  const handleResetTests = async () => {
+    try {
+      await fetch('/api/progress', { method: 'DELETE' });
+      setStage(Stage.Password);
+    } catch (error) {
+      console.error('Failed to reset tests:', error);
+    }
+  };
+
   if (isLoadingProgress) {
     return <LoadingState>Loading...</LoadingState>;
   }
@@ -70,6 +80,9 @@ export default function Home() {
           error={imagesError}
           onComplete={handleStageComplete}
         />
+      )}
+      {stage === Stage.Content && (
+        <MainContentView relationshipStart="2024-01-01" onResetTests={handleResetTests} />
       )}
     </>
   );
