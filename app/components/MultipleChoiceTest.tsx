@@ -115,23 +115,23 @@ export default function MultipleChoiceTest({ questions, onComplete }: MultipleCh
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50 flex flex-col items-center justify-center overflow-hidden"
+      className="fixed inset-0 bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50 flex items-center justify-center overflow-hidden"
     >
-      {/* Title */}
+      {/* Title - absolutely positioned */}
       <motion.div
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.2 }}
-        className="mb-8 text-center z-10"
+        className="absolute top-16 left-0 right-0 text-center z-10"
       >
         <h1 className="text-4xl font-bold bg-gradient-to-r from-rose-500 to-purple-500 bg-clip-text text-transparent mb-2">
           Let&#39;s See How Well You Know Us
         </h1>
-        <p className="text-gray-600">Answer these questions to prove your love 💕</p>
+        <p className="text-gray-600">Answer these questions to prove your love</p>
       </motion.div>
 
-      {/* Card Area */}
-      <div className="relative w-full flex-1 flex items-center justify-center px-8 gap-8">
+      {/* Card Area - centered on screen */}
+      <div className="relative w-full flex items-center justify-center px-8 gap-8">
         {/* Navigation - Prev (with invisible placeholder) */}
         <div className="flex-shrink-0 w-16 h-16">
           <AnimatePresence>
