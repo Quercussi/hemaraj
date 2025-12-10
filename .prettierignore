@@ -1,0 +1,17 @@
+# Ignore build outputs
+dist
+build
+.next
+
+# Ignore dependencies
+node_modules
+
+# Ignore generated files
+*.log
+.DS_Store
+
+# Ignore lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
