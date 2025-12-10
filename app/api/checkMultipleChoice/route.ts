@@ -1,12 +1,7 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import type { QuestionWithAnswer } from './types';
-import type {
-  Question,
-  QuestionsResponse,
-  QuizSubmission,
-  CheckAnswerResponse,
-} from './dto';
+import type { Question, QuestionsResponse, QuizSubmission, CheckAnswerResponse } from './dto';
 import { questions } from './questions';
 import { createSessionToken, Stage } from '../../utils/session';
 import { validateSession, ApiError } from '../middleware/session';
@@ -16,9 +11,9 @@ const QUIZ_DATA: QuestionWithAnswer[] = questions;
 
 const WRONG_ANSWER_MESSAGES = [
   "Really? You got that wrong? I'm disappointed.",
-  "Were you even paying attention to our relationship?",
+  'Were you even paying attention to our relationship?',
   "Wow, that's... creative. But wrong. Try again!",
-  "I expected better from you. 💔",
+  'I expected better from you. 💔',
 ];
 
 export async function GET() {
@@ -64,11 +59,11 @@ export async function POST(request: Request) {
       });
 
       const response: CheckAnswerResponse = createSuccessResponse(
-        "Impressive! You know me well 💕",
+        'Impressive! You know me well 💕',
         {
           correct: true,
           wrongCount: 0,
-          totalQuestions: QUIZ_DATA.length
+          totalQuestions: QUIZ_DATA.length,
         }
       );
       return NextResponse.json(response);
@@ -82,25 +77,19 @@ export async function POST(request: Request) {
         {
           correct: false,
           wrongCount,
-          totalQuestions: QUIZ_DATA.length
+          totalQuestions: QUIZ_DATA.length,
         }
       );
       return NextResponse.json(response);
     }
   } catch (error) {
     if (error instanceof ApiError) {
-      return NextResponse.json(
-        createErrorResponse(error.message),
-        { status: error.statusCode }
-      );
+      return NextResponse.json(createErrorResponse(error.message), { status: error.statusCode });
     }
 
     return NextResponse.json(
-      createErrorResponse(
-        'Nice try, hacker. Did you really think modifying the code would work?'
-      ),
+      createErrorResponse('Nice try, hacker. Did you really think modifying the code would work?'),
       { status: 500 }
     );
   }
 }
-

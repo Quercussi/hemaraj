@@ -18,4 +18,3 @@ export function LoadingState({ children = 'Loading...' }: LoadingStateProps) {
     </div>
   );
 }
-

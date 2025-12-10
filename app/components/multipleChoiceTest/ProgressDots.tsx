@@ -20,12 +20,11 @@ export function ProgressDots({ questions, currentIndex, answers }: ProgressDotsP
             i === currentIndex
               ? 'bg-gray-800'
               : answers[q.id] !== undefined
-              ? 'bg-gray-600'
-              : 'bg-gray-300'
+                ? 'bg-gray-600'
+                : 'bg-gray-300'
           }`}
         />
       ))}
     </div>
   );
 }
-

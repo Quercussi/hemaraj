@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useMemo } from 'react';
 import { motion } from 'framer-motion';
@@ -10,11 +10,11 @@ const SEED = Date.now();
 export default function FloatingHearts() {
   const floatingElements = useMemo(() => {
     let gen = new RandomGen(SEED);
-    
+
     return [...Array(50)].map(() => {
       const [randoms, newGen] = RandomGen.generateMany(gen, 5);
       gen = newGen;
-      
+
       return {
         isSpecialImage: randoms[0] < 0.05, // 5% chance for special images
         startX: randoms[1],
@@ -24,7 +24,7 @@ export default function FloatingHearts() {
       };
     });
   }, []);
-  
+
   const startY = typeof window !== 'undefined' ? window.innerHeight + 100 : 1100;
 
   return (
@@ -49,7 +49,7 @@ export default function FloatingHearts() {
             duration: element.duration,
             repeat: Infinity,
             delay: element.delay,
-            ease: "linear",
+            ease: 'linear',
           }}
         >
           {element.isSpecialImage ? (
@@ -68,4 +68,3 @@ export default function FloatingHearts() {
     </div>
   );
 }
-

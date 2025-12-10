@@ -7,9 +7,9 @@ import { createSuccessResponse } from '../common/dto/ApiResponse';
 
 export async function GET() {
   const cookieStore = await cookies();
-  
+
   const sessionToken = cookieStore.get('session')?.value;
-  
+
   if (!sessionToken) {
     return NextResponse.json(
       createSuccessResponse('No session found', {
@@ -48,8 +48,3 @@ export async function DELETE() {
 
   return NextResponse.json(response);
 }
-
-
-
-
-

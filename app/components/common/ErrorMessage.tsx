@@ -17,4 +17,3 @@ export function ErrorMessage({ children }: ErrorMessageProps) {
     </motion.div>
   );
 }
-

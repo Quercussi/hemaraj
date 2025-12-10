@@ -8,11 +8,11 @@ interface SubmitButtonProps {
   submittingText?: ReactNode;
 }
 
-export function SubmitButton({ 
-  isSubmitting, 
-  onClick, 
+export function SubmitButton({
+  isSubmitting,
+  onClick,
   children = 'Submit ✨',
-  submittingText = 'Checking...'
+  submittingText = 'Checking...',
 }: SubmitButtonProps) {
   return (
     <motion.button
@@ -51,4 +51,3 @@ export function SubmitButton({
     </motion.button>
   );
 }
-

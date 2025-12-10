@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { AnimatePresence } from 'framer-motion';
 import PasswordGate from '../components/PasswordGate';
@@ -14,4 +14,3 @@ export default function PasswordView({ onUnlock }: PasswordViewProps) {
     </AnimatePresence>
   );
 }
-

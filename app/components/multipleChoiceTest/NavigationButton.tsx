@@ -7,7 +7,7 @@ interface NavigationButtonProps {
 
 export function NavigationButton({ direction, onClick }: NavigationButtonProps) {
   const isNext = direction === 'next';
-  
+
   return (
     <motion.button
       initial={{ opacity: 0, x: isNext ? 20 : -20 }}
@@ -20,4 +20,3 @@ export function NavigationButton({ direction, onClick }: NavigationButtonProps) 
     </motion.button>
   );
 }
-

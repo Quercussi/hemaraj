@@ -10,4 +10,3 @@ export function ProgressIndicator({ answeredCount, totalQuestions }: ProgressInd
     </div>
   );
 }
-

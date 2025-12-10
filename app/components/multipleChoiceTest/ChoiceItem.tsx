@@ -49,4 +49,3 @@ export function ChoiceItem({ choice, index, isSelected, onSelect }: ChoiceItemPr
     </motion.button>
   );
 }
-

@@ -21,14 +21,12 @@ export class SessionError extends ApiError {
 
 /**
  * Validate session and optionally check stage
- * 
+ *
  * @param requiredStage - Optional stage to validate against
  * @returns Session payload
  * @throws SessionError if validation fails
  */
-export async function validateSession(
-  requiredStage?: Stage
-): Promise<SessionPayload> {
+export async function validateSession(requiredStage?: Stage): Promise<SessionPayload> {
   const cookieStore = await cookies();
   const sessionToken = cookieStore.get('session')?.value;
 

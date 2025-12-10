@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
@@ -59,7 +59,7 @@ export default function PasswordGate({ onUnlock }: PasswordGateProps) {
       <motion.div
         initial={{ scale: 0.9, y: 20 }}
         animate={{ scale: 1, y: 0 }}
-        transition={{ delay: 0.2, type: "spring", stiffness: 100 }}
+        transition={{ delay: 0.2, type: 'spring', stiffness: 100 }}
         className="relative z-10 bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl p-12 max-w-md w-full mx-4"
       >
         <motion.div
@@ -72,9 +72,7 @@ export default function PasswordGate({ onUnlock }: PasswordGateProps) {
           <h1 className="text-3xl font-bold bg-gradient-to-r from-rose-500 to-purple-500 bg-clip-text text-transparent mb-2">
             Enter the Secret
           </h1>
-          <p className="text-gray-600 text-sm">
-            Only those who know the password may enter...
-          </p>
+          <p className="text-gray-600 text-sm">Only those who know the password may enter...</p>
         </motion.div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -142,4 +140,3 @@ export default function PasswordGate({ onUnlock }: PasswordGateProps) {
     </motion.div>
   );
 }
-
