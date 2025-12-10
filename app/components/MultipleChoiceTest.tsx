@@ -76,6 +76,22 @@ export default function MultipleChoiceTest({ questions, onComplete }: MultipleCh
         playSound('error', 0.5);
         setAnswers({});
         setError(result.message);
+
+        await Array.from({ length: currentCard }, (_, i) => currentCard - 1 - i).reduce(
+          (promise, i) =>
+            promise.then(
+              () =>
+                new Promise((resolve) =>
+                  setTimeout(() => {
+                    playSound('card-shuffle', 0.2);
+                    setCurrentCard([i, -1]);
+                    resolve();
+                  }, 100)
+                )
+            ),
+          Promise.resolve()
+        );
+
         setTimeout(() => setError(''), 3000);
       }
     } catch (err) {
