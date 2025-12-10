@@ -91,7 +91,7 @@ export default function OrderingTest({ images, onComplete }: OrderingTestProps) 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50 flex flex-col items-center justify-center p-8 overflow-y-auto"
+      className="fixed inset-0 flex flex-col items-center justify-center p-8 overflow-y-auto"
     >
       {/* Title */}
       <motion.div

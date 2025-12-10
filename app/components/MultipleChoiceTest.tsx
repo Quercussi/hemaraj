@@ -115,7 +115,7 @@ export default function MultipleChoiceTest({ questions, onComplete }: MultipleCh
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50 flex items-center justify-center overflow-hidden"
+      className="fixed inset-0 flex items-center justify-center overflow-hidden"
     >
       {/* Title - absolutely positioned */}
       <motion.div
