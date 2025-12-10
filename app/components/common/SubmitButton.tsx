@@ -23,7 +23,7 @@ export function SubmitButton({
       whileTap={{ scale: 0.95 }}
       onClick={onClick}
       disabled={isSubmitting}
-      className="mt-8 px-12 py-4 bg-gradient-to-r from-rose-500 to-purple-500 text-white rounded-2xl font-semibold shadow-xl hover:shadow-2xl transition-all disabled:opacity-50"
+      className="fixed bottom-8 left-1/2 -translate-x-1/2 px-12 py-4 bg-white text-rose-500 border-2 border-rose-500 rounded-full font-semibold shadow-lg hover:bg-rose-50 hover:shadow-xl transition-all disabled:opacity-50 z-50"
     >
       {isSubmitting ? (
         <span className="flex items-center gap-2">
