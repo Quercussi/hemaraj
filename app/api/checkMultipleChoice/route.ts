@@ -6,10 +6,9 @@ import type {
   QuestionsResponse,
   QuizSubmission,
   CheckAnswerResponse,
-  QuizResult,
 } from './dto';
 import { questions } from './questions';
-import { Stage } from '../../utils/session';
+import { createSessionToken, Stage } from '../../utils/session';
 import { validateSession, ApiError } from '../middleware/session';
 import { createSuccessResponse, createErrorResponse } from '../common/dto/ApiResponse';
 
@@ -39,10 +38,8 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    // Middleware: Validate session and stage
     const session = await validateSession(Stage.MCQ);
 
-    // Business logic: Validate answers
     const body: QuizSubmission = await request.json();
     const { answers } = body;
 
@@ -51,9 +48,7 @@ export async function POST(request: Request) {
     });
 
     if (allCorrect) {
-      // Update session to next stage
       const cookieStore = await cookies();
-      const { createSessionToken } = await import('../../utils/session');
       const newToken = await createSessionToken({
         authenticated: session.authenticated,
         timestamp: Date.now(),
@@ -93,7 +88,6 @@ export async function POST(request: Request) {
       return NextResponse.json(response);
     }
   } catch (error) {
-    // Handle API errors with status codes
     if (error instanceof ApiError) {
       return NextResponse.json(
         createErrorResponse(error.message),
@@ -101,7 +95,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // Handle unexpected errors
     return NextResponse.json(
       createErrorResponse(
         'Nice try, hacker. Did you really think modifying the code would work?'
