@@ -61,6 +61,16 @@ export default function Home() {
           onComplete={handleStageComplete}
         />
       )}
+      {stage === Stage.Ordering && (
+        <OrderingView
+          images={images}
+          isLoading={imagesLoading}
+          error={imagesError}
+          onComplete={handleStageComplete}
+        />
+      )}
+        />
+      )}
     </>
   );
 }
