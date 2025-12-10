@@ -18,8 +18,7 @@ function getHashedPassword(): string {
   if (!password) {
     throw new Error(
       'PASSWORD environment variable is not set! ' +
-      'Please set it in your .env file or environment variables. ' +
-      'See PASSWORD_SECURITY.md for setup instructions.'
+      'Please set it in your .env file or environment variables. '
     );
   }
   

@@ -26,12 +26,12 @@ export default function PasswordGate({ onUnlock }: PasswordGateProps) {
         body: JSON.stringify({ password: pwd }),
       });
 
-      const data: UnlockResponse = await response.json();
+      const result: UnlockResponse = await response.json();
 
-      if (data.success) {
+      if (result.success) {
         onUnlock();
       } else {
-        setError(data.message);
+        setError(result.message);
         setIsLoading(false);
       }
     } catch {

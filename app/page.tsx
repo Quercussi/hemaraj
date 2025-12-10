@@ -15,10 +15,10 @@ export default function Home() {
     const fetchProgress = async () => {
       try {
         const response = await fetch('/api/progress');
-        const data: ProgressResponse = await response.json();
-        
-        if (data.passwordUnlocked) {
-          setStage(data.stage);
+        const result: ProgressResponse = await response.json();
+
+        if (result.success && result.data.passwordUnlocked) {
+          setStage(result.data.stage);
         }
       } catch (error) {
         console.error('Failed to fetch progress:', error);
@@ -38,7 +38,7 @@ export default function Home() {
     <>
       {/* Global floating hearts background - always visible */}
       <FloatingHearts />
-      
+
       {/* Stage-specific content */}
       {stage === Stage.Password && <PasswordView onUnlock={() => setStage(Stage.MCQ)} />}
     </>

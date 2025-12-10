@@ -1,12 +1,11 @@
+import type { ApiResponse } from '../common/dto/ApiResponse';
 import { Stage } from '../../utils/session';
 
-export interface ProgressResponse {
+export interface ProgressData {
   passwordUnlocked: boolean;
   stage: Stage;
 }
 
-export interface ResetResponse {
-  success: boolean;
-  message: string;
-}
+export type ProgressResponse = ApiResponse<ProgressData>;
 
+export type ResetResponse = ApiResponse<undefined>;

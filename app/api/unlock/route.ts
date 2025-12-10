@@ -3,6 +3,7 @@ import { cookies } from 'next/headers';
 import { verifyPassword, HASHED_PASSWORD } from '../../utils/passwordHash';
 import { createSessionToken, Stage } from '../../utils/session';
 import type { UnlockRequest, UnlockResponse } from './dto';
+import { createSuccessResponse, createErrorResponse } from '../common/dto/ApiResponse';
 
 export async function POST(request: Request) {
   try {
@@ -25,24 +26,20 @@ export async function POST(request: Request) {
         path: '/',
       });
 
-      const response: UnlockResponse = {
-        success: true,
-        message: "Welcome, my love ❤️",
-      };
+      const response: UnlockResponse = createSuccessResponse(
+        "Welcome, my love ❤️",
+        undefined
+      );
       return NextResponse.json(response);
     } else {
-      const response: UnlockResponse = {
-        success: false,
-        message: "It's quite rude to breach into someone's personal life 😏"
-      };
+      const response: UnlockResponse = createErrorResponse(
+        "It's quite rude to breach into someone's personal life 😏"
+      );
       return NextResponse.json(response, { status: 401 });
     }
   } catch (error) {
     console.error('Unlock API error:', error);
-    const response: UnlockResponse = {
-      success: false,
-      message: "Something went wrong"
-    };
+    const response: UnlockResponse = createErrorResponse("Something went wrong");
     return NextResponse.json(response, { status: 500 });
   }
 }
