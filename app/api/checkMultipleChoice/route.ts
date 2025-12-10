@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
 import type { QuestionWithAnswer } from './types';
 import type { Question, QuestionsResponse, QuizSubmission, CheckAnswerResponse } from './dto';
 import { questions } from './questions';
-import { createSessionToken, Stage } from '../../utils/session';
+import { updateSessionCookie } from '../../utils/session';
+import { Stage } from '../../types/session';
 import { validateSession, ApiError } from '../middleware/session';
 import { createSuccessResponse, createErrorResponse } from '../common/dto/ApiResponse';
 
@@ -23,10 +23,9 @@ export async function GET() {
     choices,
   }));
 
-  const response: QuestionsResponse = createSuccessResponse(
-    'Questions retrieved successfully',
-    { questions: questionsData }
-  );
+  const response: QuestionsResponse = createSuccessResponse('Questions retrieved successfully', {
+    questions: questionsData,
+  });
 
   return NextResponse.json(response);
 }
@@ -43,19 +42,10 @@ export async function POST(request: Request) {
     });
 
     if (allCorrect) {
-      const cookieStore = await cookies();
-      const newToken = await createSessionToken({
+      await updateSessionCookie({
         authenticated: session.authenticated,
         timestamp: Date.now(),
         stage: Stage.Ordering,
-      });
-
-      cookieStore.set('session', newToken, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
-        maxAge: 60 * 60 * 24 * 365,
-        path: '/',
       });
 
       const response: CheckAnswerResponse = createSuccessResponse(
