@@ -11,7 +11,7 @@ export default function FloatingHearts() {
   const floatingElements = useMemo(() => {
     let gen = new RandomGen(SEED);
 
-    return [...Array(50)].map(() => {
+    return [...Array(25)].map(() => {
       const [randoms, newGen] = RandomGen.generateMany(gen, 5);
       gen = newGen;
 
