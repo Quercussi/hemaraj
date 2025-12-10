@@ -1,5 +1,4 @@
 import { SignJWT, jwtVerify, JWTPayload } from 'jose';
-import 'server-only';
 
 export { Stage } from '../types/session';
 import type { Stage } from '../types/session';
