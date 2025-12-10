@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { verifySessionToken, Stage } from '../../utils/session';
+import { verifySessionToken } from '../../utils/session';
+import { Stage } from '../../types/session';
 import type { ProgressResponse, ResetResponse } from './dto';
 import { createSuccessResponse } from '../common/dto/ApiResponse';
 

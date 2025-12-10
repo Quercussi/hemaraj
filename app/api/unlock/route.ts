@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { verifyPassword, HASHED_PASSWORD } from '../../utils/passwordHash';
-import { createSessionToken, Stage } from '../../utils/session';
+import { createSessionToken } from '../../utils/session';
+import { Stage } from '../../types/session';
 import type { UnlockRequest, UnlockResponse } from './dto';
 import { createSuccessResponse, createErrorResponse } from '../common/dto/ApiResponse';
 

@@ -1,25 +1,18 @@
 import { SignJWT, jwtVerify, JWTPayload } from 'jose';
+import 'server-only';
+
+export { Stage } from '../types/session';
+import type { Stage } from '../types/session';
 
 const getSecret = () => {
-  const secret = process.env.SESSION_SECRET;
+  const secret = process.env.JWT_SECRET;
   if (!secret) {
-    console.warn('⚠️  SESSION_SECRET not set! Using fallback (INSECURE for production)');
-    return 'fallback-secret-key-please-set-SESSION_SECRET-in-env-at-least-32-chars';
-  }
-  if (secret.length < 32) {
-    throw new Error('SESSION_SECRET must be at least 32 characters long');
+    throw new Error('Invalid server configuration');
   }
   return secret;
 };
 
 const secret = new TextEncoder().encode(getSecret());
-
-export enum Stage {
-  Password = 'password',
-  MCQ = 'mcq',
-  Ordering = 'ordering',
-  Content = 'content'
-}
 
 export interface SessionPayload extends JWTPayload {
   authenticated: boolean;
@@ -40,15 +33,14 @@ export async function createSessionToken(payload: SessionPayload): Promise<strin
 export async function verifySessionToken(token: string): Promise<SessionPayload | null> {
   try {
     const { payload } = await jwtVerify(token, secret);
-    
+
     return {
       authenticated: payload.authenticated as boolean,
       timestamp: payload.timestamp as number,
       stage: payload.stage as Stage,
     };
-  } catch (error) {
-    console.error('Token verification failed:', error);
+  } catch {
+    // Silent failure
     return null;
   }
 }
-

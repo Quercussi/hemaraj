@@ -6,7 +6,7 @@ import PasswordView from './views/PasswordView';
 import MCQView from './views/MCQView';
 import { LoadingState } from './components/common/LoadingState';
 import FloatingHearts from './components/common/FloatingHearts';
-import { Stage } from './utils/session';
+import { Stage } from './types/session';
 import type { ProgressResponse } from './api/progress/dto';
 
 export default function Home() {

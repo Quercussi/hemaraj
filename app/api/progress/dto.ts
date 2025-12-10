@@ -1,5 +1,5 @@
 import type { ApiResponse } from '../common/dto/ApiResponse';
-import { Stage } from '../../utils/session';
+import { Stage } from '../../types/session';
 
 export interface ProgressData {
   passwordUnlocked: boolean;
