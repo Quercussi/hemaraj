@@ -82,7 +82,7 @@ export default function Home() {
         />
       )}
       {stage === Stage.Content && (
-        <MainContentView relationshipStart="2024-01-01" onResetTests={handleResetTests} />
+        <MainContentView relationshipStart="2025-06-14T01:30:00+07:00" onResetTests={handleResetTests} />
       )}
     </>
   );
