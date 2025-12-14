@@ -126,7 +126,7 @@ export default function Section2() {
         />
 
         {/* STEP TRANSITIONS - content in the middle */}
-        <div className="relative w-full max-w-6xl min-h-[420px]">
+        <div className="relative w-full max-w-6xl min-h-[700px]">
           <LayoutGroup>
             <AnimatePresence>
               <motion.div

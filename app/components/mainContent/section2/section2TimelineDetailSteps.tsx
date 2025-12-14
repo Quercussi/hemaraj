@@ -23,15 +23,13 @@ const TripLayout = ({
   polaroidSeed = 42,
 }: TripLayoutProps) => {
   return (
-    <div className="w-full h-full flex flex-col relative overflow-hidden">
-      {/* Space for the persistent progress bar at top */}
-      <div className="w-full pt-24 md:pt-28" />
-
-      {/* Polaroid background - uses tripId to get images from context */}
-      {showPolaroids && <PolaroidBackground tripId={tripId} seed={polaroidSeed} className="z-0" />}
-
-      {/* Main content area */}
-      <div className="flex-1 flex items-center justify-center relative z-10">{children}</div>
+    <div className="w-full h-full flex flex-col relative">
+      <div className="w-full pt-8 md:pt-10 pb-8 md:pb-12 flex-1 relative">
+        {showPolaroids && (
+          <PolaroidBackground tripId={tripId} seed={polaroidSeed} className="z-0" />
+        )}
+      </div>
+      <div className="w-full pb-8 md:pb-12 relative z-10">{children}</div>
     </div>
   );
 };
@@ -48,13 +46,11 @@ const ComicNarration = ({ text, delay = 0 }: ComicNarrationProps) => {
       initial={{ opacity: 0, y: 30, scale: 0.9 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.5, delay }}
-      className="bg-white border-4 border-gray-800 rounded-2xl p-6 md:p-8 shadow-2xl relative max-w-xl mx-4"
+      className="bg-white border-4 border-gray-800 rounded-2xl p-6 md:p-8 shadow-2xl relative w-3/4 mx-4"
     >
-      {/* Speech bubble tail */}
-      <div className="absolute -bottom-4 left-8 w-0 h-0 border-l-[16px] border-l-transparent border-r-[16px] border-r-transparent border-t-[16px] border-t-gray-800" />
-      <div className="absolute -bottom-[12px] left-[10px] w-0 h-0 border-l-[14px] border-l-transparent border-r-[14px] border-r-transparent border-t-[14px] border-t-white" />
-
-      <p className="font-handwriting text-xl md:text-2xl text-gray-800 leading-relaxed">{text}</p>
+      <p className="font-handwriting text-xl md:text-2xl text-gray-800 leading-relaxed text-center">
+        {text}
+      </p>
     </motion.div>
   );
 };
@@ -121,7 +117,7 @@ const generateTripSteps = (trip: Trip, tripIndex: number): StepConfig[] => {
       id: `trip-${trip.id}-narrative-${narrativeIndex}`,
       component: (
         <TripLayout tripId={trip.id} showPolaroids={true} polaroidSeed={trip.id * 100}>
-          <div className="flex flex-col items-center justify-center space-y-8">
+          <div className="flex flex-col items-center space-y-4 px-4">
             {/* Trip label badge */}
             <motion.div
               initial={{ opacity: 0, y: -10 }}

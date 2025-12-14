@@ -32,7 +32,7 @@ const Polaroid = ({ image, style, rotation, delay }: PolaroidProps) => {
         damping: 20,
         delay,
       }}
-      className="absolute bg-white p-2 pb-8 shadow-xl rounded-sm cursor-pointer"
+      className="absolute bg-white p-2 pb-8 shadow-xl rounded-sm cursor-pointer -translate-x-1/2 -translate-y-1/2"
       style={style}
       whileHover={{
         scale: 1.15,
@@ -70,6 +70,17 @@ export const PolaroidBackground = ({
   // 3. Otherwise, use all images
   const images = imagesProp ?? (tripId ? getImagesByTripId(tripId) : getAllImages());
 
+  // Distribution and transform configuration (all values normalized 0-1)
+  const minRadius = 0.6; // Minimum distance from center (0-1, where 1 = edge of unit circle)
+  const maxRadius = 0.95; // Maximum distance from center (0-1)
+  const angleJitter = 30; // Random variation added to angle (±degrees)
+  const centerX = 0.5; // Horizontal center position (0-1)
+  const centerY = 0.4; // Vertical center position (0-1)
+  const spreadX = 0.5; // Horizontal spread from center (0.4 = ±40%, giving range 10-90%)
+  const spreadY = 0.4; // Vertical spread from center (0.25 = ±25%, giving range 5-55%)
+  const maxRotation = 30; // Maximum polaroid rotation (±degrees)
+  const delayStep = 0.1; // Animation delay between each polaroid (seconds)
+
   // Generate scattered positions for images
   const positions = images.map((img, idx) => {
     const gen = new RandomGen(seed + img.id * 777 + idx);
@@ -78,33 +89,30 @@ export const PolaroidBackground = ({
       return val;
     });
 
-    // Distribute images across the screen with some randomness
-    // Avoid the center where content will be
-    const angle = (idx / images.length) * Math.PI * 2 + r1 * 0.5;
-    const radius = 25 + r2 * 20; // 25-45% from center
+    // Circular distribution (normalized -1 to 1)
+    const angleJitterRad = angleJitter * (Math.PI / 180); // Convert degrees to radians
+    const angle = (idx / images.length) * Math.PI * 2 + r1 * angleJitterRad;
+    const radius = minRadius + r2 * (maxRadius - minRadius);
 
-    const x = 50 + Math.cos(angle) * radius;
-    const y = 50 + Math.sin(angle) * radius;
+    const rawX = Math.cos(angle) * radius; // -1 to 1
+    const rawY = Math.sin(angle) * radius; // -1 to 1
 
-    // Keep within bounds
-    const boundedX = Math.max(5, Math.min(85, x));
-    const boundedY = Math.max(10, Math.min(80, y));
+    // Linear transform to container bounds (normalized 0-1)
+    const x = centerX + rawX * spreadX;
+    const y = centerY + rawY * spreadY;
 
     return {
       image: img,
-      left: `${boundedX}%`,
-      top: `${boundedY}%`,
-      rotation: (r3 - 0.5) * 30, // -15 to +15 degrees
+      left: `${x * 100}%`,
+      top: `${y * 100}%`,
+      rotation: (r3 - 0.5) * maxRotation,
       zIndex: idx + 1,
-      delay: idx * 0.1,
+      delay: idx * delayStep,
     };
   });
 
   return (
-    <div
-      key={stableKey}
-      className={`absolute inset-0 pointer-events-none overflow-hidden ${className}`}
-    >
+    <div key={stableKey} className={`absolute inset-0 pointer-events-none z-0 ${className}`}>
       {positions.map((pos) => (
         <Polaroid
           key={pos.image.id}
