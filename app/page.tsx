@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useQuestions } from './hooks/useQuestions';
-import { useImages } from './hooks/useImages';
+import { useOrderingTestItems } from './hooks/useOrderingTestItems';
 import PasswordView from './views/PasswordView';
 import MCQView from './views/MCQView';
 import OrderingView from './views/OrderingView';
@@ -36,7 +36,7 @@ export default function Home() {
   const [isLoadingProgress, setIsLoadingProgress] = useState(true);
 
   const { questions, isLoading: questionsLoading, error: questionsError } = useQuestions();
-  const { images, isLoading: imagesLoading, error: imagesError } = useImages();
+  const { images, isLoading: imagesLoading, error: imagesError } = useOrderingTestItems();
 
   const fetchProgress = async () => {
     try {

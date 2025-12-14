@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import type { ImagesResponse, ImageItem } from '../api/orderingTest/dto';
 
-export function useImages() {
+export function useOrderingTestItems() {
   const [images, setImages] = useState<ImageItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
