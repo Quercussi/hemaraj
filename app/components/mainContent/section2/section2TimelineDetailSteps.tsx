@@ -34,13 +34,17 @@ const TripLayout = ({
   );
 };
 
-// Helper component for comic-style speech bubble narration
+// Helper component for comic-style speech bubble narration with CSS typewriter effect
 interface ComicNarrationProps {
   text: string;
+  textKey: string; // Unique key to force text remount and restart animation
   delay?: number;
+  duration?: number; // Total typing duration in seconds
 }
 
-const ComicNarration = ({ text, delay = 0 }: ComicNarrationProps) => {
+const ComicNarration = ({ text, textKey, delay = 0, duration = 1 }: ComicNarrationProps) => {
+  const charCount = text.length;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 30, scale: 0.9 }}
@@ -48,9 +52,26 @@ const ComicNarration = ({ text, delay = 0 }: ComicNarrationProps) => {
       transition={{ duration: 0.5, delay }}
       className="bg-white border-4 border-gray-800 rounded-2xl p-6 md:p-8 shadow-2xl relative w-3/4 mx-4"
     >
-      <p className="font-handwriting text-xl md:text-2xl text-gray-800 leading-relaxed text-center">
+      <p
+        key={textKey}
+        className="font-handwriting text-xl md:text-2xl text-gray-800 leading-relaxed text-center overflow-hidden whitespace-nowrap mx-auto"
+        style={{
+          width: 0,
+          animation: `typing ${duration}s steps(${charCount}, end) ${delay}s forwards`,
+        }}
+      >
         {text}
       </p>
+      <style jsx>{`
+        @keyframes typing {
+          from {
+            width: 0;
+          }
+          to {
+            width: 100%;
+          }
+        }
+      `}</style>
     </motion.div>
   );
 };
@@ -129,7 +150,11 @@ const generateTripSteps = (trip: Trip, tripIndex: number): StepConfig[] => {
             </motion.div>
 
             {/* Comic narration */}
-            <ComicNarration text={narrative} delay={0.3} />
+            <ComicNarration
+              text={narrative}
+              textKey={`trip-${trip.id}-narrative-${narrativeIndex}`}
+              delay={0.3}
+            />
           </div>
         </TripLayout>
       ),
