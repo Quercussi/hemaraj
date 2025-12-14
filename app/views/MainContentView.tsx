@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import SectionNavigationIndicators from '../components/mainContentCommon/SectionNavigationIndicators';
 import PlayTestsButton from '../components/mainContentCommon/PlayTestsButton';
 import { sections } from '../data/sections';
 import { RelationshipProvider } from '../contexts/RelationshipContext';
@@ -73,10 +72,10 @@ export default function MainContentView({ relationshipStart, onResetTests }: Mai
         {/* Background gradient - behind floating hearts */}
         <div className="absolute inset-0 bg-gradient-to-br from-rose-50 via-pink-50 to-indigo-50 -z-10" />
         {/* Section Navigation Indicators */}
-        <SectionNavigationIndicators
-          activeSection={activeSection}
-          onSectionClick={scrollToSection}
-        />
+        {/*<SectionNavigationIndicators*/}
+        {/*  activeSection={activeSection}*/}
+        {/*  onSectionClick={scrollToSection}*/}
+        {/*/>*/}
 
         {/* Play Tests Again Button */}
         <PlayTestsButton onClick={onResetTests} />
