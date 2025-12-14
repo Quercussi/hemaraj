@@ -11,9 +11,7 @@ export function useOrderingTestItems() {
       .then((res) => res.json())
       .then((result: ImagesResponse) => {
         if (result.success) {
-          // Shuffle images on the client side
-          const shuffled = [...result.data.images].sort(() => Math.random() - 0.5);
-          setImages(shuffled);
+          setImages(result.data.images);
         } else {
           setError(result.message);
         }

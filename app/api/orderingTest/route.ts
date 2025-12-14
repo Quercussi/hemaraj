@@ -6,6 +6,7 @@ import { updateSessionCookie } from '../../utils/session';
 import { Stage } from '../../types/session';
 import { validateSession, ApiError } from '../middleware/session';
 import { createSuccessResponse, createErrorResponse } from '../common/dto/ApiResponse';
+import { shuffleArray } from '../../utils/arrayUtils';
 
 const IMAGES_DATA: ImageWithOrder[] = images.sort((a, b) => a.correctPosition - b.correctPosition);
 
@@ -24,7 +25,7 @@ export async function GET() {
   }));
 
   const response: ImagesResponse = createSuccessResponse('Images retrieved successfully', {
-    images: imageItems,
+    images: shuffleArray(imageItems),
   });
 
   return NextResponse.json(response);
