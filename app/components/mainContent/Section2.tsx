@@ -34,8 +34,11 @@ export default function Section2() {
   const hasScrolledPast = useRef(false);
 
   const currentStep = STEPS[currentStepIndex];
-  // For all life-weeks-related sub-steps, keep the same key so only the subtitle changes
-  const stepKey = currentStep.id.startsWith('life-weeks-') ? 'life-weeks' : currentStep.id;
+  const stepKey = currentStep.id.startsWith('life-weeks-')
+    ? 'life-weeks'
+    : currentStep.id.startsWith('timeline-strip-')
+      ? 'timeline-strip'
+      : (currentStep.id.match(/^trip-\d+/)?.[0] ?? currentStep.id);
   const isFirstStep = currentStepIndex === 0;
   const isLastStep = currentStepIndex === STEPS.length - 1;
 

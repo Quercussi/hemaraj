@@ -133,7 +133,7 @@ const generateTripSteps = (trip: Trip, tripIndex: number): StepConfig[] => {
             </motion.div>
 
             {/* Comic narration */}
-            <ComicNarration key={narrativeIndex} text={narrative} delay={0.3} />
+            <ComicNarration text={narrative} delay={0.3} />
           </div>
         </TripLayout>
       ),
