@@ -16,10 +16,7 @@ export const metadata: Metadata = {
   title: 'Our Love Story 💕',
   description: 'A romantic journey together',
   icons: {
-    icon: [
-      { url: '/icon.jpeg', type: 'image/jpeg' },
-      { url: '/favicon.jpeg', type: 'image/jpeg' },
-    ],
+    icon: [{ url: '/favicon.jpeg', type: 'image/jpeg' }],
   },
 };
 
