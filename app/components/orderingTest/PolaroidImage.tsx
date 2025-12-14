@@ -39,17 +39,19 @@ export function PolaroidImage({
       }
       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
     >
-      <div className="w-32 aspect-[5/6] bg-gray-200 relative overflow-hidden rounded">
-        <Image src={image.url} alt={image.caption} fill className="object-cover" />
+      <div className="pointer-events-none">
+        <div className="w-32 aspect-[5/6] bg-gray-200 relative overflow-hidden rounded">
+          <Image src={image.url} alt={image.caption} fill className="object-cover" sizes="128px" />
+        </div>
+        <p className="text-center mt-2 text-xs font-handwriting text-gray-700 px-1">
+          {image.caption}
+        </p>
       </div>
-      <p className="text-center mt-2 text-xs font-handwriting text-gray-700 px-1">
-        {image.caption}
-      </p>
 
       {isPlaced && onRemove && (
         <button
           onClick={onRemove}
-          className="absolute -top-2 -right-2 w-6 h-6 bg-indigo-500 text-white rounded-full flex items-center justify-center hover:bg-indigo-600 transition-colors shadow-md"
+          className="absolute -top-2 -right-2 w-6 h-6 bg-indigo-500 text-white rounded-full flex items-center justify-center hover:bg-indigo-600 transition-colors shadow-md pointer-events-auto"
           title="Remove and return to tray"
         >
           <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">

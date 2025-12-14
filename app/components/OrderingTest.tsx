@@ -20,29 +20,31 @@ interface OrderingTestProps {
 
 export default function OrderingTest({ images, onComplete }: OrderingTestProps) {
   const [placements, setPlacements] = useState<(number | null)[]>([null, null, null, null, null]);
-  const [draggedImage, setDraggedImage] = useState<number | null>(null);
+  const [dragState, setDragState] = useState<{ imageId: number; fromPosition?: number } | null>(
+    null
+  );
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleDragStart = (imageId: number) => {
-    setDraggedImage(imageId);
+  const handleDragStart = (imageId: number, fromPosition?: number) => {
+    setDragState({ imageId, fromPosition });
     playSound('pick-up', 0.4);
   };
 
   const handleDragEnd = () => {
-    setDraggedImage(null);
+    setDragState(null);
   };
 
   const handleDrop = (position: number) => {
-    if (draggedImage === null) return;
+    if (!dragState) return;
 
     playSound('place-down', 0.4);
 
-    const newPlacements = placements.map((p) => (p === draggedImage ? null : p));
-    newPlacements[position] = draggedImage;
+    const newPlacements = placements.map((p) => (p === dragState.imageId ? null : p));
+    newPlacements[position] = dragState.imageId;
 
     setPlacements(newPlacements);
-    setDraggedImage(null);
+    setDragState(null);
   };
 
   const handleRemoveFromSlot = (position: number) => {
@@ -103,7 +105,7 @@ export default function OrderingTest({ images, onComplete }: OrderingTestProps) 
         <h1 className="text-4xl font-bold bg-gradient-to-r from-rose-500 to-purple-500 bg-clip-text text-transparent mb-2">
           Arrange Our Story
         </h1>
-        <p className="text-gray-600">Put these memories in the correct chronological order 📸</p>
+        <p className="text-gray-600">Put these memories in the correct chronological order</p>
       </motion.div>
 
       {/* Paper Board Container */}
@@ -129,11 +131,19 @@ export default function OrderingTest({ images, onComplete }: OrderingTestProps) 
                   {placedImageId === null ? (
                     <span className="text-gray-400 text-lg font-semibold">{position + 1}</span>
                   ) : image ? (
-                    <PolaroidImage
-                      image={image}
-                      onRemove={() => handleRemoveFromSlot(position)}
-                      isPlaced
-                    />
+                    <div
+                      draggable
+                      onDragStart={() => handleDragStart(image.id, position)}
+                      onDragEnd={handleDragEnd}
+                      className="cursor-grab active:cursor-grabbing"
+                    >
+                      <PolaroidImage
+                        image={image}
+                        onRemove={() => handleRemoveFromSlot(position)}
+                        isPlaced
+                        isDragging={dragState?.imageId === image.id}
+                      />
+                    </div>
                   ) : null}
                 </div>
               </motion.div>
@@ -158,7 +168,7 @@ export default function OrderingTest({ images, onComplete }: OrderingTestProps) 
                 onDragEnd={handleDragEnd}
                 className="cursor-grab active:cursor-grabbing"
               >
-                <PolaroidImage image={image} isDragging={draggedImage === image.id} />
+                <PolaroidImage image={image} isDragging={dragState?.imageId === image.id} />
               </motion.div>
             ))}
           </div>

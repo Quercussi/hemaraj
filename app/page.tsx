@@ -11,6 +11,25 @@ import { LoadingState } from './components/common/LoadingState';
 import FloatingHearts from './components/common/FloatingHearts';
 import { Stage } from './types/session';
 import type { ProgressResponse } from './api/progress/dto';
+import { TripImagesProvider } from './contexts/TripImagesContext';
+
+// Component to preload ordering test images for caching
+function OrderingTestPreload({ images }: { images: { url: string; id: number }[] }) {
+  if (images.length === 0) return null;
+
+  return (
+    <>
+      {images.map((img) => (
+        <link
+          key={img.id}
+          rel="preload"
+          as="image"
+          href={`/_next/image?url=${encodeURIComponent(img.url)}&w=256&q=75`}
+        />
+      ))}
+    </>
+  );
+}
 
 export default function Home() {
   const [stage, setStage] = useState<Stage>(Stage.Password);
@@ -59,7 +78,10 @@ export default function Home() {
   }
 
   return (
-    <>
+    <TripImagesProvider>
+      {/* Preload ordering test images once fetched */}
+      <OrderingTestPreload images={images} />
+
       {/* Global floating hearts background - always visible */}
       <FloatingHearts />
 
@@ -82,8 +104,11 @@ export default function Home() {
         />
       )}
       {stage === Stage.Content && (
-        <MainContentView relationshipStart="2025-06-14T01:30:00+07:00" onResetTests={handleResetTests} />
+        <MainContentView
+          relationshipStart="2025-06-14T01:30:00+07:00"
+          onResetTests={handleResetTests}
+        />
       )}
-    </>
+    </TripImagesProvider>
   );
 }

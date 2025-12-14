@@ -1,34 +1,36 @@
 import type { ImageWithOrder } from './types';
 
+const sourceUrl = '{sourceUrl}';
+
 export const images: ImageWithOrder[] = [
   {
     id: 0,
-    url: '/images/memory1.jpg',
-    caption: 'Image 1',
-    correctPosition: 0,
-  },
-  {
-    id: 1,
-    url: '/images/memory2.jpg',
-    caption: 'Image 2',
+    url: `${sourceUrl}/ordering-test/one_bangkok_christmas.jpg`,
+    caption: 'One Bangkok Christmas',
     correctPosition: 1,
   },
   {
-    id: 2,
-    url: '/images/memory3.jpg',
-    caption: 'Image 3',
-    correctPosition: 2,
+    id: 1,
+    url: `${sourceUrl}/ordering-test/sheeps.jpg`,
+    caption: 'Sheep on Khao Chang',
+    correctPosition: 0,
   },
   {
-    id: 3,
-    url: '/images/memory4.jpg',
-    caption: 'Image 4',
+    id: 2,
+    url: `${sourceUrl}/ordering-test/wat_arun.jpg`,
+    caption: 'The Temple of Dawn',
     correctPosition: 3,
   },
   {
+    id: 3,
+    url: `${sourceUrl}/ordering-test/flower_garden.jpg`,
+    caption: 'The Flower Garden',
+    correctPosition: 2,
+  },
+  {
     id: 4,
-    url: '/images/memory5.jpg',
-    caption: 'Image 5',
+    url: `${sourceUrl}/ordering-test/beach.jpg`,
+    caption: 'The Beach',
     correctPosition: 4,
   },
 ];
