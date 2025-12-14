@@ -58,7 +58,7 @@ export const PolaroidBackground = ({
   images: imagesProp,
   tripId,
   className = '',
-  seed = 42,
+  seed = 89,
 }: PolaroidBackgroundProps) => {
   const { getAllImages, getImagesByTripId } = useTripImages();
 
@@ -70,18 +70,58 @@ export const PolaroidBackground = ({
   // 3. Otherwise, use all images
   const images = imagesProp ?? (tripId ? getImagesByTripId(tripId) : getAllImages());
 
-  // Distribution and transform configuration (all values normalized 0-1)
-  const minRadius = 0.6; // Minimum distance from center (0-1, where 1 = edge of unit circle)
+  // Elliptical distribution configuration
+  const minRadius = 0.6; // Minimum distance from center (0-1, where 1 = edge of ellipse)
   const maxRadius = 0.95; // Maximum distance from center (0-1)
   const angleJitter = 30; // Random variation added to angle (±degrees)
   const centerX = 0.5; // Horizontal center position (0-1)
   const centerY = 0.4; // Vertical center position (0-1)
-  const spreadX = 0.5; // Horizontal spread from center (0.4 = ±40%, giving range 10-90%)
-  const spreadY = 0.4; // Vertical spread from center (0.25 = ±25%, giving range 5-55%)
+  const radiusX = 0.45; // Horizontal semi-axis of ellipse (controls width)
+  const radiusY = 0.35; // Vertical semi-axis of ellipse (controls height)
   const maxRotation = 30; // Maximum polaroid rotation (±degrees)
   const delayStep = 0.1; // Animation delay between each polaroid (seconds)
 
-  // Generate scattered positions for images
+  // Helper: Approximate arc length from angle 0 to theta on ellipse with semi-axes (a, b)
+  // Uses numerical integration (Simpson's rule)
+  const ellipseArcLength = (a: number, b: number, theta: number, steps = 100): number => {
+    let sum = 0;
+    const dt = theta / steps;
+
+    for (let i = 0; i <= steps; i++) {
+      const t = i * dt;
+      const dx = -a * Math.sin(t);
+      const dy = b * Math.cos(t);
+      const weight = i === 0 || i === steps ? 1 : i % 2 === 0 ? 2 : 4;
+      sum += weight * Math.sqrt(dx * dx + dy * dy);
+    }
+
+    return (sum * dt) / 3;
+  };
+
+  const findAngleForArcLength = (a: number, b: number, targetLength: number): number => {
+    let low = 0;
+    let high = 2 * Math.PI;
+    const tolerance = 0.001;
+
+    for (let i = 0; i < 50; i++) {
+      const mid = (low + high) / 2;
+      const length = ellipseArcLength(a, b, mid);
+
+      if (Math.abs(length - targetLength) < tolerance) {
+        return mid;
+      }
+
+      if (length < targetLength) {
+        low = mid;
+      } else {
+        high = mid;
+      }
+    }
+
+    return (low + high) / 2;
+  };
+
+  // Generate elliptical scattered positions with equal arc length spacing
   const positions = images.map((img, idx) => {
     const gen = new RandomGen(seed + img.id * 777 + idx);
     const [r1, r2, r3] = Array.from({ length: 3 }, () => {
@@ -89,17 +129,34 @@ export const PolaroidBackground = ({
       return val;
     });
 
-    // Circular distribution (normalized -1 to 1)
-    const angleJitterRad = angleJitter * (Math.PI / 180); // Convert degrees to radians
-    const angle = (idx / images.length) * Math.PI * 2 + r1 * angleJitterRad;
+    // Choose radius for this polaroid
     const radius = minRadius + r2 * (maxRadius - minRadius);
 
-    const rawX = Math.cos(angle) * radius; // -1 to 1
-    const rawY = Math.sin(angle) * radius; // -1 to 1
+    // Scale ellipse semi-axes by radius
+    const a = radiusX * radius;
+    const b = radiusY * radius;
 
-    // Linear transform to container bounds (normalized 0-1)
-    const x = centerX + rawX * spreadX;
-    const y = centerY + rawY * spreadY;
+    // Calculate total perimeter of this ellipse (Ramanujan's approximation)
+    const h = Math.pow((a - b) / (a + b), 2);
+    const perimeter = Math.PI * (a + b) * (1 + (3 * h) / (10 + Math.sqrt(4 - 3 * h)));
+
+    // Target arc length for equal spacing
+    const targetArcLength = (idx / images.length) * perimeter;
+
+    // Find angle that corresponds to this arc length
+    let angle = findAngleForArcLength(a, b, targetArcLength);
+
+    // Add jitter
+    const angleJitterRad = angleJitter * (Math.PI / 180);
+    angle += r1 * angleJitterRad;
+
+    // Generate points on the ellipse
+    const ellipseX = Math.cos(angle) * radius;
+    const ellipseY = Math.sin(angle) * radius;
+
+    // Transform to container space
+    const x = centerX + ellipseX * radiusX;
+    const y = centerY + ellipseY * radiusY;
 
     return {
       image: img,
