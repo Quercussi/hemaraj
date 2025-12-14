@@ -94,16 +94,11 @@ export const StepSlider = ({
         onClick={handleTrackClick}
       >
         {/* Step tick marks */}
-        {Array.from({ length: totalSteps }, (_, i) => {
-          const tickPosition = totalSteps > 1 ? (i / (totalSteps - 1)) * 100 : 0;
-          return (
-            <div
-              key={i}
-              className="absolute top-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-gray-400/50"
-              style={{ left: `${tickPosition}%`, transform: 'translate(-50%, -50%)' }}
-            />
-          );
-        })}
+        <div className="absolute inset-0 flex items-center justify-between">
+          {Array.from({ length: totalSteps }, (_, i) => (
+            <div key={i} className="w-1 h-1 rounded-full bg-gray-400/50" />
+          ))}
+        </div>
 
         {/* Progress fill - quantized, with smooth animation */}
         <motion.div
