@@ -17,11 +17,11 @@ export async function POST(request: Request) {
         stage: Stage.MCQ, // Start at MCQ stage after password unlock
       });
 
-      const response: UnlockResponse = createSuccessResponse('Welcome, my love ❤️', undefined);
+      const response: UnlockResponse = createSuccessResponse('Welcome️', undefined);
       return NextResponse.json(response);
     } else {
       const response: UnlockResponse = createErrorResponse(
-        "It's quite rude to breach into someone's personal life 😏"
+        "It's quite rude to breach into someone's personal life"
       );
       return NextResponse.json(response, { status: 401 });
     }
