@@ -8,7 +8,7 @@ import NavigationButton from '@/app/components/mainContent/section2/NavigationBu
 import { StepSlider } from '@/app/components/mainContent/section2/StepSlider';
 import { RelationshipProgressBar } from '@/app/components/mainContent/section2/timelineComponents';
 
-// Helper to extract trip ID from step ID (e.g., "trip-3-intro" -> 3)
+// Helper to extract trip ID from step ID
 const getTripIdFromStepId = (stepId: string): number | null => {
   const match = stepId.match(/^trip-(\d+)/);
   return match ? parseInt(match[1], 10) : null;
@@ -23,15 +23,12 @@ const getProgressBarMode = (stepId: string): 'withTrips' | 'segmented' | 'bar' |
 };
 
 export default function Section2() {
-  // Ensure this section is used within RelationshipProvider (even if we don't use the value yet)
   useRelationship();
 
   const [isInView, setIsInView] = useState(false);
-  const [canExitUp] = useState(true);
-  const [canExitDown] = useState(true);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const sectionRef = useRef<HTMLDivElement>(null);
-  const hasScrolledPast = useRef(false);
+  const canScrollRef = useRef(true);
 
   const currentStep = STEPS[currentStepIndex];
   const stepKey = currentStep.id.startsWith('life-weeks-')
@@ -39,27 +36,29 @@ export default function Section2() {
     : currentStep.id.startsWith('timeline-strip-')
       ? 'timeline-strip'
       : (currentStep.id.match(/^trip-\d+/)?.[0] ?? currentStep.id);
+
   const isFirstStep = currentStepIndex === 0;
   const isLastStep = currentStepIndex === STEPS.length - 1;
 
-  // Determine if we should show the persistent progress bar and which trip is active
+  // Determine progress bar configuration
   const progressBarConfig = useMemo(() => {
     const mode = getProgressBarMode(currentStep.id);
     const tripId = getTripIdFromStepId(currentStep.id);
     return { mode, tripId, show: mode !== null };
   }, [currentStep.id]);
 
-  const nextStep = () => {
+  // Simple step navigation (no animation blocking)
+  const nextStep = useCallback(() => {
     if (!isLastStep) {
       setCurrentStepIndex((prev) => prev + 1);
     }
-  };
+  }, [isLastStep]);
 
-  const prevStep = () => {
+  const prevStep = useCallback(() => {
     if (!isFirstStep) {
       setCurrentStepIndex((prev) => prev - 1);
     }
-  };
+  }, [isFirstStep]);
 
   // Handler for slider step changes
   const handleStepChange = useCallback((step: number) => {
@@ -70,12 +69,7 @@ export default function Section2() {
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && entry.intersectionRatio > 0.8) {
-          setIsInView(true);
-          hasScrolledPast.current = false;
-        } else if (!entry.isIntersecting && hasScrolledPast.current) {
-          setIsInView(false);
-        }
+        setIsInView(entry.isIntersecting && entry.intersectionRatio > 0.8);
       },
       { threshold: [0, 0.1, 0.5, 0.8, 0.9, 1] }
     );
@@ -87,6 +81,50 @@ export default function Section2() {
     return () => observer.disconnect();
   }, []);
 
+  // Handle wheel scroll within Section 2
+  useEffect(() => {
+    if (!sectionRef.current) return;
+
+    const handleWheel = (e: WheelEvent) => {
+      // Only handle if we're in Section 2
+      if (!isInView) return;
+
+      // Check if we can scroll
+      if (!canScrollRef.current) return;
+
+      const scrollingDown = e.deltaY > 0;
+      const scrollingUp = e.deltaY < 0;
+
+      // At first step scrolling up OR at last step scrolling down -> allow section navigation
+      if ((isFirstStep && scrollingUp) || (isLastStep && scrollingDown)) {
+        return; // Let browser handle section snap
+      }
+
+      // Otherwise, navigate steps
+      e.preventDefault();
+
+      canScrollRef.current = false;
+
+      if (scrollingDown && !isLastStep) {
+        nextStep();
+      } else if (scrollingUp && !isFirstStep) {
+        prevStep();
+      }
+
+      // Re-enable scrolling after delay
+      setTimeout(() => {
+        canScrollRef.current = true;
+      }, 500);
+    };
+
+    const section = sectionRef.current;
+    section.addEventListener('wheel', handleWheel, { passive: false });
+
+    return () => {
+      section.removeEventListener('wheel', handleWheel);
+    };
+  }, [isInView, isFirstStep, isLastStep, nextStep, prevStep]);
+
   return (
     <div ref={sectionRef} className="min-h-screen flex items-center justify-center p-8 relative">
       {/* Step slider at top */}
@@ -97,7 +135,7 @@ export default function Section2() {
         isVisible={isInView}
       />
 
-      {/* Persistent progress bar - stays outside AnimatePresence so it doesn't remount */}
+      {/* Persistent progress bar */}
       <motion.div
         className="fixed top-28 left-1/2 -translate-x-1/2 w-full max-w-4xl px-4 md:px-8 z-40"
         initial={false}
@@ -125,10 +163,10 @@ export default function Section2() {
           isVisible={isInView}
         />
 
-        {/* STEP TRANSITIONS - content in the middle */}
+        {/* Step content */}
         <div className="relative w-full max-w-6xl min-h-[700px]">
           <LayoutGroup>
-            <AnimatePresence>
+            <AnimatePresence mode="wait">
               <motion.div
                 key={stepKey}
                 initial={{ opacity: 0 }}
@@ -152,9 +190,9 @@ export default function Section2() {
         />
       </div>
 
-      {/* Exit hint at bottom boundary */}
+      {/* Exit hint at bottom */}
       <AnimatePresence>
-        {isLastStep && canExitDown && (
+        {isLastStep && (
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}

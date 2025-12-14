@@ -13,7 +13,6 @@ interface MainContentViewProps {
 
 export default function MainContentView({ relationshipStart, onResetTests }: MainContentViewProps) {
   const [activeSection, setActiveSection] = useState(0);
-  const containerRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   // Track which section is in view
@@ -22,10 +21,15 @@ export default function MainContentView({ relationshipStart, onResetTests }: Mai
 
     const handleScroll = () => {
       if (!scrollContainerRef.current) return;
+
       const scrollTop = scrollContainerRef.current.scrollTop;
       const windowHeight = window.innerHeight;
       const newSection = Math.round(scrollTop / windowHeight);
-      setActiveSection(Math.min(sections.length - 1, Math.max(0, newSection)));
+      const clampedSection = Math.min(sections.length - 1, Math.max(0, newSection));
+
+      if (clampedSection !== activeSection) {
+        setActiveSection(clampedSection);
+      }
     };
 
     const scrollContainer = scrollContainerRef.current;
@@ -34,48 +38,13 @@ export default function MainContentView({ relationshipStart, onResetTests }: Mai
     return () => {
       scrollContainer.removeEventListener('scroll', handleScroll);
     };
-  }, []);
-
-  // Handle keyboard navigation
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (!scrollContainerRef.current) return;
-
-      const scrollContainer = scrollContainerRef.current;
-      const windowHeight = window.innerHeight;
-
-      if (e.key === 'ArrowDown' || e.key === 'PageDown') {
-        e.preventDefault();
-        scrollContainer.scrollBy({ top: windowHeight, behavior: 'smooth' });
-      } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
-        e.preventDefault();
-        scrollContainer.scrollBy({ top: -windowHeight, behavior: 'smooth' });
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
-
-  const scrollToSection = (index: number) => {
-    if (!scrollContainerRef.current) return;
-    const windowHeight = window.innerHeight;
-    scrollContainerRef.current.scrollTo({
-      top: index * windowHeight,
-      behavior: 'smooth',
-    });
-  };
+  }, [activeSection]);
 
   return (
     <RelationshipProvider relationshipStart={relationshipStart}>
-      <div ref={containerRef} className="relative w-full h-screen overflow-hidden">
-        {/* Background gradient - behind floating hearts */}
+      <div className="relative w-full h-screen overflow-hidden">
+        {/* Background gradient */}
         <div className="absolute inset-0 bg-gradient-to-br from-rose-50 via-pink-50 to-indigo-50 -z-10" />
-        {/* Section Navigation Indicators */}
-        {/*<SectionNavigationIndicators*/}
-        {/*  activeSection={activeSection}*/}
-        {/*  onSectionClick={scrollToSection}*/}
-        {/*/>*/}
 
         {/* Play Tests Again Button */}
         <PlayTestsButton onClick={onResetTests} />
@@ -102,15 +71,16 @@ export default function MainContentView({ relationshipStart, onResetTests }: Mai
           )}
         </AnimatePresence>
 
-        {/* Smooth Scrolling Container */}
+        {/* Scrolling Container with snap points */}
         <div
           ref={scrollContainerRef}
-          className="w-full h-screen overflow-y-auto overflow-x-hidden smooth-scroll relative z-10"
+          className="w-full h-screen overflow-y-auto overflow-x-hidden snap-y snap-mandatory smooth-scroll relative z-10"
+          style={{ scrollBehavior: 'smooth' }}
         >
           {sections.map((section) => {
             const SectionComponent = section.component;
             return (
-              <div key={section.id} className="w-full min-h-screen">
+              <div key={section.id} className="w-full h-screen snap-start snap-always">
                 <SectionComponent />
               </div>
             );

@@ -24,7 +24,7 @@ const TripLayout = ({
 }: TripLayoutProps) => {
   return (
     <div className="w-full h-full flex flex-col relative">
-      <div className="w-full pt-8 md:pt-10 pb-8 md:pb-12 flex-1 relative">
+      <div className="w-full h-full mt-40 mb-8 md:mb-12 flex-1 relative">
         {showPolaroids && (
           <PolaroidBackground tripId={tripId} seed={polaroidSeed} className="z-0" />
         )}
