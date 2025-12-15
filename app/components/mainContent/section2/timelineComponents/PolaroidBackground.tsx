@@ -58,7 +58,7 @@ export const PolaroidBackground = ({
   images: imagesProp,
   tripId,
   className = '',
-  seed = 89,
+  seed = 890,
 }: PolaroidBackgroundProps) => {
   const { getAllImages, getImagesByTripId } = useTripImages();
 
@@ -71,8 +71,9 @@ export const PolaroidBackground = ({
   const images = imagesProp ?? (tripId ? getImagesByTripId(tripId) : getAllImages());
 
   // Elliptical distribution configuration
-  const minRadius = 0.6; // Minimum distance from center (0-1, where 1 = edge of ellipse)
-  const maxRadius = 0.95; // Maximum distance from center (0-1)
+  const minRadius = 0.3; // Minimum distance from center (0-1, where 1 = edge of ellipse)
+  const maxRadius = 1; // Maximum distance from center (0-1)
+  const initAngle = 45;
   const angleJitter = 30; // Random variation added to angle (±degrees)
   const centerX = 0.5; // Horizontal center position (0-1)
   const centerY = 0.4; // Vertical center position (0-1)
@@ -144,7 +145,12 @@ export const PolaroidBackground = ({
     const targetArcLength = (idx / images.length) * perimeter;
 
     // Find angle that corresponds to this arc length
+    // TODO: fix angle. this angle probably starts from (1,0)... d_theta has no direct variation with d_arc_length in eclipse. It also depends where the angle start.
     let angle = findAngleForArcLength(a, b, targetArcLength);
+
+    // Add initial angle
+    const initAngleRad = initAngle * (Math.PI / 180);
+    angle += initAngleRad;
 
     // Add jitter
     const angleJitterRad = angleJitter * (Math.PI / 180);
