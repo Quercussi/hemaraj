@@ -208,7 +208,7 @@ const ENDING_STEPS: StepConfig[] = [
         <div className="w-full pt-24 md:pt-28" />
 
         {/* Scattered polaroids, more faded - uses first 6 images from context */}
-        <div className="absolute inset-0 opacity-30">
+        <div className="absolute inset-0 opacity-30 mt-36 md:mt-28">
           <PolaroidBackgroundProgressive visibleCount={6} seed={7777} />
         </div>
 
@@ -230,7 +230,7 @@ const ENDING_STEPS: StepConfig[] = [
               transition={{ delay: 0.6, duration: 0.6 }}
               className="text-lg md:text-xl text-gray-600 leading-relaxed"
             >
-              Every moment could be our next adventure. And we have so many more ahead of us.
+              Every moment could be our next adventure. <br /> And we have so many more ahead of us.
             </motion.p>
           </div>
         </div>
