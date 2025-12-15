@@ -189,29 +189,6 @@ export default function Section2() {
           isVisible={isInView}
         />
       </div>
-
-      {/* Exit hint at bottom */}
-      <AnimatePresence>
-        {isLastStep && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="fixed bottom-40 left-1/2 -translate-x-1/2 z-50"
-          >
-            <div className="bg-gradient-to-r from-rose-500 to-purple-500 text-white px-6 py-3 rounded-full shadow-xl">
-              <motion.div
-                animate={{ y: [0, 5, 0] }}
-                transition={{ duration: 1, repeat: Infinity }}
-                className="text-center"
-              >
-                <p className="text-sm mb-1">Scroll again to continue</p>
-                <div className="text-xl">↓</div>
-              </motion.div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   );
 }
