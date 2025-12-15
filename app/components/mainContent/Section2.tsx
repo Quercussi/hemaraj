@@ -18,7 +18,7 @@ const getTripIdFromStepId = (stepId: string): number | null => {
 const getProgressBarMode = (stepId: string): 'withTrips' | 'segmented' | 'bar' | null => {
   if (stepId.startsWith('trip-')) return 'withTrips';
   if (stepId === 'timeline-final-collage') return 'segmented';
-  if (stepId === 'timeline-future-trips') return 'bar';
+  if (stepId === 'timeline-future-trips') return 'segmented';
   return null;
 };
 
