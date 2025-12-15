@@ -43,7 +43,7 @@ export const TRIPS: Trip[] = [
     narratives: [
       'This is the first time we met.',
       'The trip to Khao Chang was awkward.',
-      'I was just awkward in general to be honest.',
+      'I was just awkward in general, to be honest.',
     ],
     images: [
       { id: 101, url: `${imageRootUrl}/trip1/cafe.jpg`, caption: 'Something Journey' },
@@ -61,7 +61,7 @@ export const TRIPS: Trip[] = [
     phase: 'friends',
     narratives: [
       'We had our first date here.',
-      'And we talked a lot',
+      'And we talked a lot.',
       'You explored CMU like for the first time.',
       'And catching up my walking pace.',
     ],
@@ -84,7 +84,7 @@ export const TRIPS: Trip[] = [
       'I received my medal with a bad haircut.',
       "I couldn't stop complaining about the bad haircut!",
       'We went to the flower market, which was pretty beautiful.',
-      'Not as much as you',
+      'Not as much as you.',
     ],
     images: [
       { id: 301, url: `${imageRootUrl}/trip3/paragon_entrance.jpg`, caption: '' },
@@ -127,9 +127,9 @@ export const TRIPS: Trip[] = [
     phase: 'friends',
     narratives: [
       'This was when I drove to Bangkok and back.',
-      'With the whole crew of 4 people',
-      'All I remembered was getting speeding ticket.',
-      'And being drunk',
+      'With the whole crew of 4 people.',
+      'All I remembered was getting a speeding ticket.',
+      'And being drunk.',
     ],
     images: [
       { id: 501, url: `${imageRootUrl}/trip5/lampang.jpg`, caption: 'Road to Chaing Mai' },
@@ -150,9 +150,9 @@ export const TRIPS: Trip[] = [
     phase: 'dating',
     narratives: [
       'We went for the best doughnut ever.',
-      'And I purpose to you!',
+      'And I proposed to you!',
       'You took 12 hours to respond...',
-      'With a Yes!',
+      'With a yes!',
     ],
     images: [
       { id: 601, url: `${imageRootUrl}/trip6/doughnut.jpg`, caption: 'Flips & Flips' },
@@ -173,9 +173,9 @@ export const TRIPS: Trip[] = [
       "We decided that we hadn't been drunk enough on the Bangkok trip.",
       'So we drank again.',
       'This trip is probably the one I realize how good Chiang Rai food is!',
-      'I discovered Kaphrao 29',
-      'I discovered Chivit Thamma Da',
-      'I discovered Larb Bo Thong',
+      'I discovered Kaphrao 29.',
+      'I discovered Chivit Thamma Da.',
+      'I discovered Larb Bo Thong.',
       'Every meal was special!',
     ],
     images: [
@@ -193,8 +193,8 @@ export const TRIPS: Trip[] = [
     location: 'Bangkok',
     phase: 'dating',
     narratives: [
-      'I traveled before getting a job',
-      'I see the Temple of Dawn for the first time',
+      'I traveled before getting a job.',
+      'I see the Temple of Dawn for the first time.',
       'It was beautiful beyond explanation.',
       'Also we found Tuang Dim Sum, which was the best discovery ever.',
     ],
@@ -217,7 +217,7 @@ export const TRIPS: Trip[] = [
     narratives: [
       'We were away for just 11 days!',
       'Do you miss me that much?!',
-      'Anyway, we went to Sailom Bang Pu',
+      'Anyway, we went to Sailom Bang Pu.',
       'And you shot me a legendary image on Phra Phutthayotfa Bridge!',
     ],
     images: [
@@ -236,11 +236,11 @@ export const TRIPS: Trip[] = [
     location: 'Chaing Rai',
     phase: 'dating',
     narratives: [
-      'We tried DY Mala for the first time',
-      'Also one of the best discovery of all time',
-      'I think I drank a dozen glass of matcha on that trip.',
+      'We tried DY Mala for the first time.',
+      'Also one of the best discoveries of all time.',
+      'I think I drank a dozen glasses of matcha on that trip.',
       'From alcohol to matcha… both financial devastations of different eras.',
-      'Different drinks, same bankruptcy',
+      'Different drinks, same bankruptcy.',
     ],
     images: [
       { id: 1001, url: `${imageRootUrl}/trip10/akha_farmville.jpg`, caption: 'Akha FarmVille' },
@@ -259,7 +259,7 @@ export const TRIPS: Trip[] = [
     end: new Date('2025-09-01'),
     location: 'Bangkok',
     phase: 'dating',
-    narratives: ['We met for just like 2 hours?', 'We only met for Sushiro'],
+    narratives: ['We met for just like 2 hours?', 'We only met for Sushiro.'],
     images: [{ id: 1101, url: `${imageRootUrl}/trip11/beer.jpg`, caption: 'Beer' }],
   },
   {
@@ -269,7 +269,7 @@ export const TRIPS: Trip[] = [
     end: new Date('2025-9-16'),
     location: 'Bangkok',
     phase: 'dating',
-    narratives: ['I had the best matcha ever.', "We ate a lot... That's all I remember"],
+    narratives: ['I had the best matcha ever.', "We ate a lot... That's all I remember."],
     images: [
       { id: 1201, url: `${imageRootUrl}/trip12/momo_paradise.jpg`, caption: 'Momo Paradise' },
       { id: 1202, url: `${imageRootUrl}/trip12/best_matcha.jpg`, caption: 'Best Usucha' },
@@ -286,12 +286,12 @@ export const TRIPS: Trip[] = [
     phase: 'dating',
     narratives: [
       'We went to Pattaya with a bus.',
-      'We eat a lot of seafood',
+      'We ate a lot of seafood.',
       'Unimaginable amount of seafood...',
       'We marathoned Chiikawa as well.',
       "What do you mean I got food poisoning and you don't?",
       'And we went to Ko Lan island!',
-      'We rent a bike and I almost injured both of us. 😂',
+      'We rented a bike and I almost injured both of us. 😂',
     ],
     images: [
       { id: 1301, url: `${imageRootUrl}/trip13/beach_gril.jpg`, caption: 'Ko Lan' },
@@ -309,9 +309,9 @@ export const TRIPS: Trip[] = [
     location: 'Chiang Rai',
     phase: 'dating',
     narratives: [
-      'We went on a mountain driving trip',
+      'We went on a mountain driving trip.',
       'The view was so great. The air was so nice.',
-      'The road though... was not nice',
+      'The road though... was not nice.',
       'A very eventful trip nonetheless.',
     ],
     images: [

@@ -173,30 +173,18 @@ const ENDING_STEPS: StepConfig[] = [
   {
     id: 'timeline-final-collage',
     component: (
-      <div className="w-full h-full flex flex-col relative overflow-hidden">
-        {/* Space for persistent progress bar */}
-        <div className="w-full pt-24 md:pt-28" />
-
+      <div className="w-full h-full flex flex-col relative overflow-hidden mt-48 md:pt-28">
         {/* All polaroids in background - uses all images from context */}
-        {/*<PolaroidBackground seed={9999} className="z-0" />*/}
+        <PolaroidBackground seed={1956} className="z-0" />
 
         {/* Central content */}
-        <div className="flex-1 flex items-center justify-center relative z-10">
+        <div className="flex-1 flex items-center justify-center relative z-10  opacity-75">
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ type: 'spring', stiffness: 150, damping: 20 }}
             className="bg-white/95 backdrop-blur-xl border-4 border-gray-800 rounded-2xl p-8 md:p-12 shadow-2xl max-w-lg mx-4 text-center"
           >
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 0.3, type: 'spring' }}
-              className="text-6xl md:text-7xl mb-6"
-            >
-              💕
-            </motion.div>
-
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -220,22 +208,13 @@ const ENDING_STEPS: StepConfig[] = [
         <div className="w-full pt-24 md:pt-28" />
 
         {/* Scattered polaroids, more faded - uses first 6 images from context */}
-        <div className="absolute inset-0 opacity-30">
+        <div className="absolute inset-0 opacity-30 mt-36 md:mt-28">
           <PolaroidBackgroundProgressive visibleCount={6} seed={7777} />
         </div>
 
         {/* Central content */}
         <div className="flex-1 flex items-center justify-center relative z-10">
           <div className="text-center space-y-8 px-4 max-w-2xl">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="text-6xl md:text-7xl"
-            >
-              ✈️
-            </motion.div>
-
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -251,8 +230,7 @@ const ENDING_STEPS: StepConfig[] = [
               transition={{ delay: 0.6, duration: 0.6 }}
               className="text-lg md:text-xl text-gray-600 leading-relaxed"
             >
-              Every gap in that timeline is just time waiting for our next adventure. And we have so
-              many more ahead of us.
+              Every moment could be our next adventure. <br /> And we have so many more ahead of us.
             </motion.p>
           </div>
         </div>
@@ -264,40 +242,23 @@ const ENDING_STEPS: StepConfig[] = [
   {
     id: 'timeline-soft-close',
     component: (
-      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-rose-50 via-white to-yellow-50">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1, ease: 'easeOut' }}
-          className="text-center px-4"
-        >
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.8 }}
-            className="text-4xl md:text-6xl font-handwriting bg-gradient-to-r from-yellow-500 via-rose-500 to-purple-500 bg-clip-text text-transparent leading-relaxed"
-          >
-            Distance means nothing
-          </motion.p>
+      <div className="w-full h-full flex flex-col relative overflow-hidden">
+        {/* Space for persistent progress bar */}
+        <div className="w-full pt-24 md:pt-28" />
 
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8, duration: 0.8 }}
-            className="text-4xl md:text-6xl font-handwriting bg-gradient-to-r from-purple-500 via-rose-500 to-yellow-500 bg-clip-text text-transparent leading-relaxed mt-4"
-          >
-            when someone means everything
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.5, duration: 1 }}
-            className="mt-12 text-5xl"
-          >
-            💕
-          </motion.div>
-        </motion.div>
+        {/* Central content */}
+        <div className="flex-1 flex items-center justify-center relative z-10">
+          <div className="text-center space-y-8 px-4 max-w-2xl">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.6 }}
+              className="text-3xl md:text-4xl font-handwriting bg-gradient-to-r from-rose-500 to-purple-500 bg-clip-text text-transparent"
+            >
+              Distance means nothing when someone means everything
+            </motion.h2>
+          </div>
+        </div>
       </div>
     ),
   },
