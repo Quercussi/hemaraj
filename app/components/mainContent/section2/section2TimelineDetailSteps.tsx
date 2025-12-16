@@ -2,6 +2,8 @@ import { motion } from 'framer-motion';
 import type { StepConfig } from './section2Types';
 import { TRIPS, TRIP_COUNT, type Trip } from './section2Data';
 import { PolaroidBackground, PolaroidBackgroundProgressive } from './timelineComponents';
+import { keyContextBuilder } from '@/app/utils/KeyContextBuilder';
+import { KeyContextProvider, useKeyContext } from '@/app/hooks/useKeyContext';
 
 // ============================================================================
 // TIMELINE DETAIL STEPS - Trip-by-trip storytelling
@@ -13,21 +15,13 @@ interface TripLayoutProps {
   tripId: number;
   children: React.ReactNode;
   showPolaroids?: boolean;
-  polaroidSeed?: number;
 }
 
-const TripLayout = ({
-  tripId,
-  children,
-  showPolaroids = false,
-  polaroidSeed = 42,
-}: TripLayoutProps) => {
+const TripLayout = ({ tripId, children, showPolaroids = false }: TripLayoutProps) => {
   return (
     <div className="w-full h-full flex flex-col relative">
       <div className="w-full h-full mt-40 mb-8 md:mb-12 flex-1 relative">
-        {showPolaroids && (
-          <PolaroidBackground tripId={tripId} seed={polaroidSeed} className="z-0" />
-        )}
+        {showPolaroids && <PolaroidBackground tripId={tripId} className="z-0" />}
       </div>
       <div className="w-full pb-8 md:pb-12 relative z-10">{children}</div>
     </div>
@@ -37,12 +31,13 @@ const TripLayout = ({
 // Helper component for comic-style speech bubble narration with CSS typewriter effect
 interface ComicNarrationProps {
   text: string;
-  textKey: string; // Unique key to force text remount and restart animation
   delay?: number;
   duration?: number; // Total typing duration in seconds
 }
 
-const ComicNarration = ({ text, textKey, delay = 0, duration = 1 }: ComicNarrationProps) => {
+const ComicNarration = ({ text, delay = 0, duration = 1 }: ComicNarrationProps) => {
+  const keyContext = useKeyContext();
+  const textKey = keyContext.get('comic-text');
   const charCount = text.length;
 
   return (
@@ -134,29 +129,32 @@ const generateTripSteps = (trip: Trip, tripIndex: number): StepConfig[] => {
 
   // Steps 2+: Narrative slides with polaroids
   trip.narratives.forEach((narrative, narrativeIndex) => {
+    const stepKeyContext = keyContextBuilder()
+      .with('polaroid', `${trip.id}-${trip.id * 100}`)
+      .with('comic-text', `${trip.id}-${narrativeIndex}`)
+      .build();
+
     steps.push({
       id: `trip-${trip.id}-narrative-${narrativeIndex}`,
       component: (
-        <TripLayout tripId={trip.id} showPolaroids={true} polaroidSeed={trip.id * 100}>
-          <div className="flex flex-col items-center space-y-4 px-4">
-            {/* Trip label badge */}
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="flex items-center gap-3"
-            >
-              <span className="text-4xl">📍</span>
-              <span className="text-xl md:text-2xl font-bold text-gray-700">{trip.location}</span>
-            </motion.div>
+        <KeyContextProvider value={stepKeyContext}>
+          <TripLayout tripId={trip.id} showPolaroids={true}>
+            <div className="flex flex-col items-center space-y-4 px-4">
+              {/* Trip label badge */}
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="flex items-center gap-3"
+              >
+                <span className="text-4xl">📍</span>
+                <span className="text-xl md:text-2xl font-bold text-gray-700">{trip.location}</span>
+              </motion.div>
 
-            {/* Comic narration */}
-            <ComicNarration
-              text={narrative}
-              textKey={`trip-${trip.id}-narrative-${narrativeIndex}`}
-              delay={0.3}
-            />
-          </div>
-        </TripLayout>
+              {/* Comic narration */}
+              <ComicNarration text={narrative} delay={0.3} />
+            </div>
+          </TripLayout>
+        </KeyContextProvider>
       ),
     });
   });

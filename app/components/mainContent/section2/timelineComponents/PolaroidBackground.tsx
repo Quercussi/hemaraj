@@ -5,13 +5,14 @@ import Image from 'next/image';
 import { RandomGen } from '@/app/utils/RandomGen';
 import type { TripImage } from '../section2Data';
 import { useTripImages } from '@/app/contexts/TripImagesContext';
+import { useKeyContextOptional } from '@/app/hooks/useKeyContext';
 import React from 'react';
 
 interface PolaroidBackgroundProps {
   images?: TripImage[]; // Optional - falls back to all images from context
   tripId?: number; // Optional - get images for specific trip
   className?: string;
-  seed?: number;
+  seed?: number; // Optional - used for RandomGen (defaults to extracting from key context)
 }
 
 interface PolaroidProps {
@@ -58,11 +59,21 @@ export const PolaroidBackground = ({
   images: imagesProp,
   tripId,
   className = '',
-  seed = 890,
+  seed: seedProp,
 }: PolaroidBackgroundProps) => {
   const { getAllImages, getImagesByTripId } = useTripImages();
+  const keyContext = useKeyContextOptional();
+  const stableKey = keyContext.get('polaroid');
 
-  const stableKey = `polaroid-${tripId}-${seed}`;
+  // Use provided seed or extract from key (format: "polaroid-{value}")
+  // The last numeric segment of the key is used as the seed
+  const seed =
+    seedProp ??
+    (() => {
+      const keyParts = stableKey.split('-');
+      const lastPart = keyParts[keyParts.length - 1];
+      return parseInt(lastPart, 10) || 89;
+    })();
 
   // Determine which images to use:
   // 1. If images prop provided, use those
