@@ -1,6 +1,6 @@
 import type { StepConfig } from './section2Types';
 import { HER_BIRTHDATE, MY_BIRTHDATE, FIRST_MET } from './section2Data';
-import { WEEKS_IN_80_YEARS } from '@/app/components/mainContent/section2/lifeWeeksSteps/lifeWeeksUtils';
+import { getWeeksIn80Years } from '@/app/components/mainContent/section2/lifeWeeksSteps/lifeWeeksUtils';
 import { LifeWeeksGridVariant } from '@/app/components/mainContent/section2/lifeWeeksSteps/enums/LifeWeeksGridVariant';
 import { LifeWeeksScreen } from '@/app/components/mainContent/section2/lifeWeeksSteps/LifeWeeksScreen';
 
@@ -17,7 +17,7 @@ const herPercentage = ((togetherWeeks / herLifeWeeks) * 100).toFixed(2);
 const myPercentage = ((togetherWeeks / myLifeWeeks) * 100).toFixed(2);
 
 const herFirstMetWeek = getWeekOfLife(HER_BIRTHDATE, FIRST_MET);
-const herTotalSharedCapacity = WEEKS_IN_80_YEARS - herFirstMetWeek;
+const herTotalSharedCapacity = getWeeksIn80Years(HER_BIRTHDATE) - herFirstMetWeek;
 
 const herStorySoFarPercentage = ((togetherWeeks / herTotalSharedCapacity) * 100).toFixed(2);
 const herStoryLeftPercentage = (100 - Number(herStorySoFarPercentage)).toFixed(2);

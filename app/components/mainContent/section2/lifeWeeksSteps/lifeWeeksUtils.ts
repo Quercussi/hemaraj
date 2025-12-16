@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import {
   HER_BIRTHDATE,
   MY_BIRTHDATE,
@@ -8,7 +9,11 @@ import { WeekStatus } from '@/app/components/mainContent/section2/lifeWeeksSteps
 import { PersonKey } from '@/app/components/mainContent/section2/lifeWeeksSteps/enums/PersonKey';
 import { LifeWeeksGridVariant } from '@/app/components/mainContent/section2/lifeWeeksSteps/enums/LifeWeeksGridVariant';
 
-export const WEEKS_IN_80_YEARS = 80 * 52;
+export const getWeeksIn80Years = (birthDate: Date): number => {
+  const start = dayjs(birthDate);
+  const end80 = start.add(80, 'year');
+  return end80.diff(start, 'week');
+};
 
 export const getWeekStatus = (
   weekIndex: number,
@@ -17,7 +22,7 @@ export const getWeekStatus = (
   startedDating: Date,
   now: Date
 ): WeekStatus => {
-  const weekDate = new Date(birthDate.getTime() + weekIndex * 7 * 24 * 60 * 60 * 1000);
+  const weekDate = dayjs(birthDate).add(weekIndex, 'week').toDate();
 
   if (weekDate < birthDate) return WeekStatus.BeforeBirth;
   if (weekDate > now) return WeekStatus.Future;
@@ -58,9 +63,10 @@ export const createOpacityResolver =
 
 export const generateWeeksArray = (person: PersonKey) => {
   const birthDate = person === PersonKey.Her ? HER_BIRTHDATE : MY_BIRTHDATE;
+  const totalWeeks = getWeeksIn80Years(birthDate);
   const now = new Date();
 
-  return Array.from({ length: WEEKS_IN_80_YEARS }, (_, i) => {
+  return Array.from({ length: totalWeeks }, (_, i) => {
     const status = getWeekStatus(i, birthDate, FIRST_MET, STARTED_DATING, now);
     return { index: i, status };
   });
