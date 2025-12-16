@@ -1,9 +1,32 @@
-@import url('https://fonts.googleapis.com/css2?family=Indie+Flower&family=Kalam:wght@300;400;700&display=swap');
+/* Google Fonts - add more families here if you switch --font-main */
+@import url('https://fonts.googleapis.com/css2?family=Indie+Flower&family=Kalam:wght@300;400;700&family=Patrick+Hand&display=swap');
+
+/* Other font imports (uncomment if needed):
+   Quicksand:    https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap
+   Nunito:       https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap
+   Poppins:      https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap
+   Comfortaa:    https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;700&display=swap
+   Caveat:       https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap
+   Shadows Into Light: https://fonts.googleapis.com/css2?family=Shadows+Into+Light&display=swap
+*/
 @import 'tailwindcss';
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* Modern & warm (recommended for readability + romance) */
+  /*--font-main: 'Quicksand', sans-serif;*/
+  /* --font-main: 'Nunito', sans-serif;*/
+  /* --font-main: 'Poppins', sans-serif;*/
+  /* --font-main: 'Comfortaa', cursive;*/
+
+  /* Handwritten / Script (romantic but less readable for long text) */
+  /* --font-main: 'Kalam', cursive;*/
+  /* --font-main: 'Indie Flower', cursive;*/
+  /* --font-main: 'Caveat', cursive;*/
+  --font-main: 'Patrick Hand', cursive;
+  /* --font-main: 'Shadows Into Light', cursive;*/
 }
 
 @theme inline {
@@ -30,8 +53,7 @@ body {
   padding: 0;
   background: var(--background);
   color: var(--foreground);
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  font-family: var(--font-main);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow: hidden;
