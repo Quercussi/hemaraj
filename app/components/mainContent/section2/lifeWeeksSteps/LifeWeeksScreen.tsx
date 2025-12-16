@@ -9,18 +9,19 @@ import { LifeWeeksColumn } from '@/app/components/mainContent/section2/lifeWeeks
 import { Legend } from '@/app/components/mainContent/section2/lifeWeeksSteps/Legend';
 import { LifeWeeksGridVariant } from '@/app/components/mainContent/section2/lifeWeeksSteps/enums/LifeWeeksGridVariant';
 import { PersonKey } from '@/app/components/mainContent/section2/lifeWeeksSteps/enums/PersonKey';
+import { useKeyContext } from '@/app/hooks/useKeyContext';
 
 interface LifeWeeksScreenProps {
-  narrativeKey: string;
   narrative: ReactNode;
   gridVariant?: LifeWeeksGridVariant;
 }
 
 export const LifeWeeksScreen = ({
-  narrativeKey,
   narrative,
   gridVariant = LifeWeeksGridVariant.Normal,
 }: LifeWeeksScreenProps) => {
+  const narrativeKey = useKeyContext().get('narrative');
+
   return (
     <LifeWeeksProvider herWeeks={HER_WEEKS} myWeeks={MY_WEEKS} variant={gridVariant}>
       <div className="w-full h-full flex items-center justify-center">

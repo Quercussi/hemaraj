@@ -35,7 +35,11 @@ export default function Section2() {
     ? 'life-weeks'
     : currentStep.id.startsWith('timeline-strip-')
       ? 'timeline-strip'
-      : (currentStep.id.match(/^trip-\d+/)?.[0] ?? currentStep.id);
+      : currentStep.id.startsWith('timeline-progress-bar-')
+        ? 'timeline-progress-bar'
+        : currentStep.id.startsWith('timeline-segmented-')
+          ? 'timeline-segmented'
+          : (currentStep.id.match(/^trip-\d+/)?.[0] ?? currentStep.id);
 
   const isFirstStep = currentStepIndex === 0;
   const isLastStep = currentStepIndex === STEPS.length - 1;
