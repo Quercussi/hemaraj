@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import dayjs from 'dayjs';
 import RotatingMessages from '../rotatingMessages/RotatingMessages';
 import { useRelationship } from '../../contexts/RelationshipContext';
 
@@ -18,25 +19,28 @@ export default function Section1() {
 
   useEffect(() => {
     const calculateDuration = () => {
-      const start = new Date(relationshipStart);
-      const now = new Date();
-      const diff = now.getTime() - start.getTime();
+      const start = dayjs(relationshipStart);
+      const now = dayjs();
 
-      const seconds = Math.floor(diff / 1000);
-      const minutes = Math.floor(seconds / 60);
-      const hours = Math.floor(minutes / 60);
-      const days = Math.floor(hours / 24);
-      const years = Math.floor(days / 365);
-      const months = Math.floor((days % 365) / 30);
+      // Calendar-based cascading calculation
+      const years = now.diff(start, 'year');
+      const afterYears = start.add(years, 'year');
 
-      setDuration({
-        years,
-        months: months,
-        days: days % 30,
-        hours: hours % 24,
-        minutes: minutes % 60,
-        seconds: seconds % 60,
-      });
+      const months = now.diff(afterYears, 'month');
+      const afterMonths = afterYears.add(months, 'month');
+
+      const days = now.diff(afterMonths, 'day');
+      const afterDays = afterMonths.add(days, 'day');
+
+      const hours = now.diff(afterDays, 'hour');
+      const afterHours = afterDays.add(hours, 'hour');
+
+      const minutes = now.diff(afterHours, 'minute');
+      const afterMinutes = afterHours.add(minutes, 'minute');
+
+      const seconds = now.diff(afterMinutes, 'second');
+
+      setDuration({ years, months, days, hours, minutes, seconds });
     };
 
     calculateDuration();
